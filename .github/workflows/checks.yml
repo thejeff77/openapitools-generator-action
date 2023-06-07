@@ -12,8 +12,18 @@ jobs:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
+          openapi-url: https://raw.githubusercontent.com/openapi-generators/openapi-python-client/main/end_to_end_tests/openapi.json
+      - run: cd rust-client
+  smoke-test-kotlin-url:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: openapi-generators/openapitools-generator-action@v1
+        with:
+          generator: kotlin
+          config-file: test_data/kotlin-config.yml
           openapi-url: https://raw.githubusercontent.com/openapi-generators/openapi-python-client/main/end_to_end_tests/openapi.json
       - run: cd kotlin-client
   smoke-test-file:
@@ -22,63 +32,63 @@ jobs:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
           openapi-file: test_data/openapi.json
-      - run: cd kotlin-client
+      - run: cd rust-client
   smoke-test-absolute-file:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
           openapi-file: /github/workspace/test_data/openapi.json
-      - run: cd kotlin-client
+      - run: cd rust-client
   smoke-test-absolute-config:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: /github/workspace/test_data/config.yml
           openapi-file: test_data/openapi.json
-      - run: cd kotlin-client
+      - run: cd rust-client
   smoke-test-template:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
           openapi-file: test_data/openapi.json
           template-dir: test_data/templates/rust/
-      - run: cd kotlin-client
+      - run: cd rust-client
   smoke-test-absolute-template:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
           openapi-file: test_data/openapi.json
           template-dir: /github/workspace/test_data/templates/rust/
-      - run: cd kotlin-client
+      - run: cd rust-client
   test-openapi-version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           config-file: test_data/config.yml
           openapi-file: test_data/openapi.json
-          generator-tag: latest-release
-      - run: cd kotlin-client
+          generator-tag: v5.0.0
+      - run: cd rust-client
   test-no-config:
     runs-on: ubuntu-latest
     steps:
@@ -87,14 +97,14 @@ jobs:
         with:
           generator: rust
           openapi-file: test_data/openapi.json
-      - run: cd kotlin-client
+      - run: cd rust-client
   test-command-args:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: openapi-generators/openapitools-generator-action@v1
         with:
-          generator: kotlin
+          generator: rust
           openapi-file: test_data/openapi.json
           command-args: --model-name-prefix=BLAH
-      - run: test -f kotlin-client/src/models/blah_a_model.rs
+      - run: test -f rust-client/src/models/blah_a_model.rs
