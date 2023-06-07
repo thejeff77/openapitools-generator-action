@@ -2,7 +2,7 @@ from subprocess import call
 from sys import argv
 from os import getenv
 
-(_, generator, generator_tag, openapi_file, openapi_url, config_file, template_dir, *args) = argv
+(_, workspace, generator, generator_tag, openapi_file, openapi_url, config_file, template_dir, *args) = argv
 
 cmd = f"docker run -u 1001 --rm --workdir /github/workspace -v {getenv('GITHUB_WORKSPACE')}:/github/workspace"
 cmd = f"{cmd} openapitools/openapi-generator-cli:{generator_tag} generate"
@@ -10,7 +10,7 @@ cmd = f"{cmd} -g {generator} -o /github/workspace/{generator}-client"
 
 if openapi_url == "UNSET":
     if not openapi_file.startswith("/"):
-        openapi_file = f"/github/workspace/{openapi_file}"
+        openapi_file = f"{workspace}/{openapi_file}"
     cmd = f"{cmd} -i {openapi_file}"
 else:
     cmd = f"{cmd} -i {openapi_url}"
